@@ -28,8 +28,19 @@ async function run() {
             const products = await cursor.toArray()
             res.send(products)
 
+        })
+
+        app.post('/products', async (req, res) => {
+
+            const newProduct = req.body;
+            const result = await productsColluction.insertOne(newProduct)
+            console.log('adding new product', newProduct);
+            res.send(result)
 
         })
+
+
+
 
 
     }
