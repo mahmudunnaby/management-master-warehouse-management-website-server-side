@@ -39,6 +39,12 @@ async function run() {
 
         })
 
+        app.get('/myitems/:id', async (req, res) => {
+            console.log(req.params.id)
+            res.send(req.params.id)
+
+        })
+
 
 
 
