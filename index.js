@@ -40,9 +40,16 @@ async function run() {
         })
 
         app.get('/myitems/:id', async (req, res) => {
-            console.log(req.params.id)
-            res.send(req.params.id)
+            // console.log(req.params.id)
+            // res.send(req.params.id)
+            const search = req.params.id
 
+
+            const query = { email: `${req.params.id}` }
+            // console.log(query);
+            const cursor = productsColluction.find(query)
+            const products = await cursor.toArray()
+            res.send(products)
         })
 
 
