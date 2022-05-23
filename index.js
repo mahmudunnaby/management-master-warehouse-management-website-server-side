@@ -1,5 +1,6 @@
 const express = require('express');
 var cors = require('cors');
+var ObjectId = require('mongodb').ObjectId;
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config()
 const app = express();
@@ -21,6 +22,7 @@ async function run() {
 
         const productsColluction = client.db('warehouseManagementDB').collection('products');
 
+        //get all products
         app.get('/products', async (req, res) => {
 
             const query = {}
@@ -30,6 +32,7 @@ async function run() {
 
         })
 
+        //post a products in all products collection
         app.post('/products', async (req, res) => {
 
             const newProduct = req.body;
@@ -38,6 +41,8 @@ async function run() {
             res.send(result)
 
         })
+
+        //get product by email 
 
         app.get('/myitems/:id', async (req, res) => {
             // console.log(req.params.id)
@@ -51,7 +56,44 @@ async function run() {
             const products = await cursor.toArray()
             res.send(products)
         })
+        //get product by quantity 
 
+        app.get('/restock/:id', async (req, res) => {
+            // console.log(req.params.id)
+            // res.send(req.params.id)
+            const search = req.params.id
+
+
+            const query = { quantity: `${req.params.id}` }
+            // console.log(query);
+            const cursor = productsColluction.find(query)
+            const products = await cursor.toArray()
+            res.send(products)
+        })
+
+        //get product by id
+
+        app.get('/products/:id', async (req, res) => {
+            // console.log(req.params.id)
+            // res.send(req.params.id)
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            console.log(query);
+            const result = await productsColluction.findOne(query)
+
+            res.send(result)
+        })
+
+        //delete a product
+
+        app.delete('/products/:id', async (req, res) => {
+
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+
+            const result = await productsColluction.deleteOne(query);
+            res.send(result)
+        })
 
 
 
