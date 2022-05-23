@@ -95,7 +95,7 @@ async function run() {
             res.send(result)
         })
 
-        //update product
+        //update product restock
 
         app.put('/products/:id', async (req, res) => {
             const id = req.params.id
@@ -105,6 +105,24 @@ async function run() {
             const updatedDoc = {
                 $set: {
                     quentity: updateQuentity.quentity
+                }
+            }
+
+            const result = await productsColluction.updateOne(filter, updatedDoc, options)
+
+            res.send(result)
+        })
+
+        //update product delivered
+
+        app.put('/delivered/:id', async (req, res) => {
+            const id = req.params.id
+            const updateDelivered = req.body
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true }
+            const updatedDoc = {
+                $set: {
+                    quentity: updateDelivered.quentity
                 }
             }
 
