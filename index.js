@@ -56,20 +56,20 @@ async function run() {
             const products = await cursor.toArray()
             res.send(products)
         })
-        //get product by quantity 
+        // //get product by quantity 
 
-        app.get('/restock/:id', async (req, res) => {
-            // console.log(req.params.id)
-            // res.send(req.params.id)
-            const search = req.params.id
+        // app.get('/restock/:id', async (req, res) => {
+        //     // console.log(req.params.id)
+        //     // res.send(req.params.id)
+        //     const search = req.params.id
 
 
-            const query = { quantity: `${req.params.id}` }
-            // console.log(query);
-            const cursor = productsColluction.find(query)
-            const products = await cursor.toArray()
-            res.send(products)
-        })
+        //     const query = { quantity: `${req.params.id}` }
+        //     // console.log(query);
+        //     const cursor = productsColluction.find(query)
+        //     const products = await cursor.toArray()
+        //     res.send(products)
+        // })
 
         //get product by id
 
@@ -94,6 +94,27 @@ async function run() {
             const result = await productsColluction.deleteOne(query);
             res.send(result)
         })
+
+        //update product
+
+        app.put('/products/:id', async (req, res) => {
+            const id = req.params.id
+            const updateQuentity = req.body
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true }
+            const updatedDoc = {
+                $set: {
+                    quentity: updateQuentity.quentity
+                }
+            }
+
+            const result = await productsColluction.updateOne(filter, updatedDoc, options)
+
+            res.send(result)
+        })
+
+
+
 
 
 
